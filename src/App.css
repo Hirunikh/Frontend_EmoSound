@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.slogan {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
