@@ -59,14 +59,14 @@ const MainComponent = ({ onEmotionDetection }) => {
     // Method to render music recommendations
     const renderRecommendations = (data) => {
         let renderList = data.map(song =>
-            <div key={song.uri} class="song-item">
-                <div class="song-info">
-                    <div class="song-name">{song.name}</div>
-                    <div class="artist">{song.artist}</div>
-                    <div class="album">{song.album}</div>
-                    <div class="duration">{song.duration}</div>
+            <div key={song.uri} className="song-item">
+                <div className="song-info">
+                    <div className="song-name">{song.name}</div>
+                    <div className="artist">{song.artist}</div>
+                    <div className="album">{song.album}</div>
+                    <div className="duration">{song.duration}</div>
                 </div>
-                <button class="play-button" onClick={() => handlePlayMusic(song.uri)}><i class="material-icons">play_arrow</i></button>
+                <button className="play-button" onClick={() => handlePlayMusic(song.uri)}><i className="material-icons">play_arrow</i></button>
             </div>
         );
         setRecommendedMusic(renderList);
@@ -83,9 +83,13 @@ const MainComponent = ({ onEmotionDetection }) => {
         try {
             const response = await fetch('http://localhost:5000/popular_playlists');
             const data = await response.json();
-            renderRecommendations(data[0].tracks);
-            setIsLoading(false)
-            spotifyEmbedController.loadUri(data[0].tracks[0].uri);
+            if (data && data.length > 0 && data[0].tracks && data[0].tracks.length > 0) {
+                renderRecommendations(data[0].tracks);
+                setIsLoading(false);
+                spotifyEmbedController.loadUri(data[0].tracks[0].uri);
+            } else {
+                console.error('Error: No tracks found in popular playlists');
+            }
         } catch (error) {
             console.error('Error fetching popular playlists:', error);
         }
@@ -99,10 +103,10 @@ const MainComponent = ({ onEmotionDetection }) => {
     });
 
     return (
-        <div class="container">
+        <div className="container">
             {/* Webcam container */}
-            <div class="webcam-container">
-                <h5 class="emotion-detector">Emotion Detector - Let's uncover the mood you're in right now!</h5>
+            <div className="webcam-container">
+                <h5 className="emotion-detector">Emotion Detector - Let's uncover the mood you're in right now!</h5>
                 <Webcam
                     audio={false}
                     ref={webcamRef}
@@ -110,11 +114,11 @@ const MainComponent = ({ onEmotionDetection }) => {
                     screenshotFormat="image/jpeg"
                     width="100%" // Ensure webcam takes full width of its container
                 />
-                <div class="controls-container">
+                <div className="controls-container">
                     {/* Toggle for automatic mode */}
-                    <div class="toggle-container">
+                    <div className="toggle-container">
                         <span>Automatic Mode</span>
-                        <label class="toggle-switch">
+                        <label className="toggle-switch">
                             <input
                                 type="checkbox"
                                 value={automaticMode}
@@ -130,26 +134,26 @@ const MainComponent = ({ onEmotionDetection }) => {
                                     }
                                 }}
                             />
-                            <span class="slider"></span>
+                            <span className="slider"></span>
                         </label>
                     </div>
                     {/* Button to manually capture image */}
-                    {!automaticMode && <button class="button" onClick={captureImageAndSend}>Capture</button>}
+                    {!automaticMode && <button className="button" onClick={captureImageAndSend}>Capture</button>}
                 </div>  
                 {/* Display detected emotion */}
-                {detectedEmotion && <div class="detected-emotion"> {detectedEmotion}</div>}          
+                {detectedEmotion && <div className="detected-emotion"> {detectedEmotion}</div>}          
             </div>
             {/* Music container */}
-            <div class="music-container">
-                <h5 class="feel-the-music">Feel the Music, Let your emotions dance with the melody I suggest.</h5>
-                <div class="player">
+            <div className="music-container">
+                <h5 className="feel-the-music">Feel the Music, Let your emotions dance with the melody I suggest.</h5>
+                <div className="player">
                     {initialLoad && <Skeleton height={`100%`} width={`100%`} count={1} />}
                     <div id="embed-iframe"></div>
                 </div>
-                <h2 class="recommendations">Recommendations</h2>
-                <div class="songs-container">
+                <h2 className="recommendations">Recommendations</h2>
+                <div className="songs-container">
                     {isLoading && <Skeleton height={`100%`} width={`100%`} count={1} />}
-                    <div class="song-list">
+                    <div className="song-list">
                         {recommendedMusic}
                     </div>
                 </div>
