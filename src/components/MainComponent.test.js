@@ -93,7 +93,16 @@ describe('MainComponent', () => {
     });
   });
 
-  //Error Handling Test: 
-  //Playback Test:
+  // Functional Test: Capture image and send function works
+  it('captures image and sends it to backend', async () => {
+    render(<MainComponent />);
+    const captureButton = await screen.findByText('Capture');
+    fireEvent.click(captureButton);
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating async delay
+    });
+    expect(global.fetch).toHaveBeenCalled();
+
+  });
 
 });
